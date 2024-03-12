@@ -3,14 +3,19 @@ import { PathTree } from "treeify-paths";
 import TreeItem from "./TreeItem";
 import FileItem from "./FileItem";
 import FolderItem from "./FolderItem";
+import NLPTest from 'scripts/NLPTest';
+import KGGenerator from 'scripts/KGGenerator';
+import { docTest } from 'scripts/NLPTest';
+
 
 export default class FileTree{
     root: FolderItem;
     children: Array<TreeItem> = []
     selectAllEl: HTMLElement;
     generateEl: HTMLElement;
-    selectedFilesPath: Array<String>;
+    selectedFilesPath: Array<string>;
     app:App;
+    KGGenerator: KGGenerator;
 
     constructor(app: App){
         this.app = app
@@ -22,7 +27,8 @@ export default class FileTree{
 
         }
         this.root = new FolderItem(root)
-        this.root
+
+        this.KGGenerator = new KGGenerator(app)
     }
 
     addChildren(children:Array<PathTree>){
@@ -54,7 +60,6 @@ export default class FileTree{
     getSelectedFiles(){
         this.selectedFilesPath = []
         this.getSelectedFilesRecursive(this.root.children)
-        console.log(this.selectedFilesPath)
     }
 
     getSelectedFilesRecursive(children:Array<TreeItem>){
@@ -70,7 +75,7 @@ export default class FileTree{
     }
 
     generateKnowledgeGraph(){
-        
+        this.KGGenerator.processFiles(this.selectedFilesPath)
     }
     
 }

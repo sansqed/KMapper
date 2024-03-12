@@ -24,9 +24,14 @@
 		"typescript": "4.7.4"
 	},
 	"dependencies": {
+		"corenlp": "^1.5.2",
+		"corenlp-ts": "^0.0.1",
+		"marked": "^12.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"stream": "^0.0.2",
-		"treeify-paths": "^2.0.1"
+		"treeify-paths": "^2.0.1",
+		"wink-eng-lite-web-model": "^1.5.2",
+		"wink-nlp": "^1.14.3"
 	}
 }
