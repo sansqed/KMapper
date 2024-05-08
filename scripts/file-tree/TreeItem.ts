@@ -1,5 +1,6 @@
 import { PathTree } from "treeify-paths";
 import FolderItem from "./FolderItem";
+import { MainSettings } from "scripts/MainSettings";
 
 export default class TreeItem{
     checked:boolean = false;
@@ -30,7 +31,11 @@ export default class TreeItem{
         this.checked = check ?? !this.checked
     }
 
-    handleCheck(check?:boolean){
-
+    handleCheck(check:boolean){
+        if(check){
+            MainSettings.settingsData.selectedMD.push(this.path)
+        } else {
+            MainSettings.settingsData.selectedMD = MainSettings.settingsData.selectedMD.filter(path => path !== this.path)
+        }
     }
 }

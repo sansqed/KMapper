@@ -1,6 +1,8 @@
 import FolderItem from "./FolderItem";
 import TreeItem from "./TreeItem";
 import { PathTree } from "treeify-paths";
+import { MainSettings } from "scripts/MainSettings";
+import Utils from "scripts/Utils";
 
 export default class FileItem extends TreeItem{
     fileEl: HTMLDivElement;
@@ -27,22 +29,30 @@ export default class FileItem extends TreeItem{
 
         let fileNameLabel = this.fileEl.createEl("label")
         fileNameLabel.setAttribute("for", this.path)
+        fileNameLabel.style.display = "flex"
 
         let fileName = fileNameLabel.createEl("p")
-        fileName.setText(this.name)
+        fileName.setText(Utils.getFileNameWithoutExtension(this.name))
         fileName.style.width = "fit-content"
         fileName.style.marginTop = "0"
         fileName.style.marginBottom = "0"
     }
 
-    handleCheck(check?:boolean){
+    async handleCheck(check?:boolean){
         this.toggleCheck(check)
         let checkbox = this.fileEl.querySelector(".tree-item-checkbox") as HTMLInputElement
         checkbox.checked = this.checked
 
-        // if uncheck, cascade uncheck to parent
         if(!this.checked){
             this.toggleCheckAllParents()
+        }
+
+        if(this.checked){
+            MainSettings.settingsData.selectedMD.push(this.path)
+            await MainSettings.saveSettings()
+        } else {
+            MainSettings.settingsData.selectedMD = MainSettings.settingsData.selectedMD.filter(path => path !== this.path)
+            await MainSettings.saveSettings()
         }
         
     }

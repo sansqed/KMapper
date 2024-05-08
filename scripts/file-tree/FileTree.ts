@@ -1,21 +1,15 @@
 import { App, Modal } from 'obsidian';
 import { PathTree } from "treeify-paths";
 import TreeItem from "./TreeItem";
-import FileItem from "./FileItem";
 import FolderItem from "./FolderItem";
-import NLPTest from 'scripts/NLPTest';
-import KGGenerator from 'scripts/KGGenerator';
-import { docTest } from 'scripts/NLPTest';
-
+import KGGenerator from 'scripts/KMapperPipeline';
+import { MainSettings } from 'scripts/MainSettings';
 
 export default class FileTree{
     root: FolderItem;
     children: Array<TreeItem> = []
     selectAllEl: HTMLElement;
-    generateEl: HTMLElement;
-    selectedFilesPath: Array<string>;
     app:App;
-    KGGenerator: KGGenerator;
 
     constructor(app: App){
         this.app = app
@@ -28,7 +22,6 @@ export default class FileTree{
         }
         this.root = new FolderItem(root)
 
-        this.KGGenerator = new KGGenerator(app)
     }
 
     addChildren(children:Array<PathTree>){
@@ -36,13 +29,6 @@ export default class FileTree{
     }
 
     generateHTML(el:HTMLDivElement){
-        this.generateEl = el.createEl("button")
-        this.generateEl.textContent = "Generate Knowledge Graph"
-        this.generateEl.addEventListener("click", event => {
-            this.getSelectedFiles()
-            this.generateKnowledgeGraph()
-        })
-
         this.root.isCollapsed = true
         this.root.isCollapsible = false
         this.root.generateHTML(el)
@@ -55,27 +41,5 @@ export default class FileTree{
             else 
                 child.handleCheck(checked)
         })
-    }
-
-    getSelectedFiles(){
-        this.selectedFilesPath = []
-        this.getSelectedFilesRecursive(this.root.children)
-    }
-
-    getSelectedFilesRecursive(children:Array<TreeItem>){
-        children.forEach(child => {
-            if(child instanceof FolderItem)
-                this.getSelectedFilesRecursive(child.children)
-            else{
-                if(child.checked)
-                    this.selectedFilesPath.push(child.path)
-            }
-
-        })
-    }
-
-    generateKnowledgeGraph(){
-        this.KGGenerator.processFiles(this.selectedFilesPath)
-    }
-    
+    } 
 }

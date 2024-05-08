@@ -1,6 +1,7 @@
 import TreeItem from "./TreeItem";
 import { PathTree } from "treeify-paths";
 import FileItem from "./FileItem";
+import Utils from "scripts/Utils";
 
 export default class FolderItem extends TreeItem{
     children: Array<TreeItem> = [];
@@ -23,7 +24,8 @@ export default class FolderItem extends TreeItem{
 
     addChild(child:PathTree){
         if(child.children.length == 0){
-            this.children.push(new FileItem(child, this))
+            if(Utils.isValidMarkdownFile(child.name))
+                this.children.push(new FileItem(child, this))
         } else {
             this.children.push(new FolderItem(child, this))
         }
@@ -142,7 +144,7 @@ export default class FolderItem extends TreeItem{
         }
         
     }
-    toggleCheckAllChildren(check?:boolean){
+    toggleCheckAllChildren(check:boolean){
         if(this.children.length != 0){
             this.children.forEach( child => {
                 if(child instanceof FolderItem)

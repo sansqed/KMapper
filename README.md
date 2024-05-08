@@ -1,96 +1,76 @@
-# Obsidian Sample Plugin
+# KMapper
+KMapper is a free and open-source Obsidian plugin that automatically generates Canvas-based concept maps from Obsidian notes using state-of-the-art GPT models and graph layout algorithms. KMapper can also optimize the layout of existing Canvas concept maps.
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+By leveraging GPT models, KMapper can extract import concepts and their relationships from bullet point-based and/or sentence-based notes written in Markdown. Users can customize the behavior of GPT by changing the prompt and providing examples using few-shot prompting. 
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
+Supported GPT models
+- GPT 3.5 Turbo 0125 (recommended)
+- GPT 3.5 Turbo
+- GPT 4 Turbo
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+Through ELK, a graph layout engine, KMapper can optimize the layout of concept maps to emphasize important concepts and improve readability. 
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+![[Pasted image 20240508005333.png]]
+![[Pasted image 20240509024833.png]]
+## 🎗️ Etymology
+The name KMapper (pronounced as /ˈmæpər/) is derived from *knapping*, a process of manufacturing stone-based tools and producing flat surfaces from hard stones, such as obsidian, by repeatedly striking its surface until the desired shape is achieved. Like knapping, KMapper reduces Obsidian notes into its core concepts, revealing its underlying connections.
+## ⭐ Features
+- Automatically generate concept maps from Obsidian notes
+- User-configurable prompts and few-shot prompting
+- Optimize the layout of existing Canvas concept maps
+## ⛔ Limitations
+- Currently supports GPT models only. 
+- The quality of the generated concept maps depend on the quality of the Obsidian notes. Only relationships explicitly stated in the notes will be extracted.
+- Auto-layout of existing concept maps only support Canvas with text nodes only. Although running the command won't trigger any error if a group exists in the Canvas, it's layout won't be optimized.
+## 🔧Getting started
+### Installation
+1. Clone this repo in `<vault dir>/.obsidian/plugins`
+3. Open `Settings > Third-party plugins` and disable `Safe mode`
+4. Activate KMapper in `Settings > Community plugins`
+5. In `Settings > KMapper`, enter OpenAI API key
+6. Descriptions of other settings can be found in the `KMapper settings` in this guide.
+### Usage
+**Generating concept maps**
+1. Click KMapper in the ribbon OR search and select `KMapper: Generate knowledge map` in the command palette.
+2. Select the files used to generate concept map. Multiple files can be selected.
+3. Enter the path where the concept map will be generated.
+4. Select the LLM to be used. It is recommended to use `GPT 3.5 Turbo 0125` or `GPT 4 Turbo`.
+5. Additional options
+	- `Open after generation` - if enabled, KMapper will automatically open the generated Canvas.
+	- `Overwrite file if exist` - if disabled, KMapper will create a file with suffix `(1)`, `(2)`, etc.
+6. Click the `Generate` button to generate. A progress bar will show along with the status of the generation process.
+7. Once generated, you can modify the concept map to suite your needs. You can also optimize its layout (follow the instructions below)
 
-## First time developing plugins?
+> [!NOTE]
+> Since GPT models are designed to return varying responses, every time a concept map is generated, a different set of concepts and relations will be returned. This is despite setting the model to the lowest temperature settings. *You may keep generating if the resulting concept map is not ideal.* 
 
-Quick starting guide for new plugin devs:
+**Optimizing layout of existing concept maps**
+1. Open any Canvas file.
+2. Search and select `KMapper: Optimize canvas layout` in the command palette. This option will only show if the active file is a Canvas.
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+**Other KMapper settings** 
+- **OpenAI settings**
+	- **Edit LLM prompt** - When toggled, this will show the **LLM prompt** settings. 
+		- It is recommended to not modify the prompt since this will impact the behavior of KMapper. 
+		- This option is provided for experimental purposes.
+	- **LLM prompt** - This will be the prompt used in generating the concept-relation-concept triples. Follow the [prompting guide](KMapper_tips.md).
+		- The guide also contains the default prompt. Copy this to reset the prompt to default.
+	- **OpenAI examples** - These examples will guide the GPT models in the creating the ideal triples. Follow the [few-shot prompting guide](Kmapper_tips#Few-shot prompting).
+		- **NOTE**: It is recommended to limit the number of examples to 2-3 examples to prevent exceeding the allowable tokens.
+- **Graph layout settings**
+	- **Minimum text box width** - This sets the minimum text box width in Canvas
+	- **Maximum text box width** - This sets the maximum text box width in Canvas
+	- **Graph spacing** - This sets the spacing of the text boxes with each other. It is recommended to set it at 100-150.
 
-## Releasing new releases
+## 👾Debugging and possible errors
+- To show the Devtools, press `ctrl + shift + I`
+- Generating the concept maps will take, at most, 1 minute. If it takes longer than that, you can inspect the Devtools to check for any errors.
+- When providing examples, OpenAI might return an error stating that the number of tokens have exceeded. When this is the case, you can
+	- reduce the number of examples, or
+	- reduce the length of the examples
+- If you encounter any unexpected errors, contact the author.
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
-
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
-
-## Adding your plugin to the community plugin list
-
-- Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
-```
-
-If you have multiple URLs, you can also do:
-
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
-
-## API Documentation
-
-See https://github.com/obsidianmd/obsidian-api
+## Building instructions
+1. Install [Node.js](https://nodejs.org/en/download)
+2. Run `npm i` on this repo's directory. This will install all packages used by KMapper.
+3. Run `npm run build`
