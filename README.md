@@ -10,8 +10,8 @@ Supported GPT models
 
 Through ELK, a graph layout engine, KMapper can optimize the layout of concept maps to emphasize important concepts and improve readability. 
 
-![[Pasted image 20240508005333.png]]
-![[Pasted image 20240509024833.png]]
+![](assets/sample-output.png) ![](assets/kmapper-ui.png)
+
 ## 🎗️ Etymology
 The name KMapper (pronounced as /ˈmæpər/) is derived from *knapping*, a process of manufacturing stone-based tools and producing flat surfaces from hard stones, such as obsidian, by repeatedly striking its surface until the desired shape is achieved. Like knapping, KMapper reduces Obsidian notes into its core concepts, revealing its underlying connections.
 ## ⭐ Features

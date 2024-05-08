@@ -39,7 +39,7 @@ export default class MainModal extends Modal {
         let titleText = titleEl.createEl("h2")
 		
         titleEl.style.height = "3rem"
-        titleText.setText('Obsidian KG');
+        titleText.setText('KMapper');
 
         this.showFileTreeArea(contentEl)
         this.showSettings(contentEl)
@@ -72,7 +72,7 @@ export default class MainModal extends Modal {
         
         let titleWrapper = settingsContainer.createDiv({cls: 'title-wrapper'})
         let titleText = titleWrapper.createEl("h2")
-        titleText.setText("Generate KG Settings")
+        titleText.setText("Settings")
 
         let exportPath = new Setting(settingsContainer)
             .setName("Generate path")
@@ -162,8 +162,9 @@ export default class MainModal extends Modal {
                 MainModal.generateBtn.buttonEl.style.backgroundColor = "var(--interactive-accent)"
                 MainModal.generateBtn.buttonEl.style.marginTop = "1rem"
                 MainModal.generateBtn.buttonEl.style.width = "100%"
+                MainModal.generateBtn.buttonEl.style.color = "white"
                 MainModal.generateBtn
-                    .setButtonText("Generate Knowledge Graph")
+                    .setButtonText("Generate concept map")
                     .onClick(() => {
                         let { isValid, reasons } = Utils.isSettingsValid()
                         if(isValid){
