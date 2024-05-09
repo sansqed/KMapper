@@ -27,23 +27,34 @@ export default class KMapperPipeline{
         MainSettings.settingsData.isGenerating = true
         await MainSettings.saveSettings()
 
+        // get files from vault
+        // store TFile objects in this.files
         new Notice("Getting files from vault")
         this.getFiles()
         MainModal.progressBar.setValue(10)
         
+        // read contents from vault
+        // clean contents (wikilinks, md links, comments, frontmatter)
+        // store in this.selectedMD
         new Notice("Cleaning contents")
         await this.getContents()
         MainModal.progressBar.setValue(30)
         
+        // use contents in this.selectedMD
+        // use GPT to get triples
         new Notice("Getting triples")
         const triples = await this.tripletExtractor.getTriples(this.selectedMD)
         this.triples.push(...triples)
         MainModal.progressBar.setValue(80)
 
+        // aggregates triples into concepts and relations
+        // run ELK engine for x-y coordinate values
+        // use coords in Canvas
         new Notice("Drawing graph")
         const canvas = await this.drawGraph.draw(this.triples)
         MainModal.progressBar.setValue(90)
 
+        // writing to canvas file
         new Notice("Creating canvas file")
         let file = await Utils.writeCanvas(this.app, canvas.toString())
         
