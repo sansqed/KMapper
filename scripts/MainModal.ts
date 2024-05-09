@@ -76,7 +76,6 @@ export default class MainModal extends Modal {
 
         let exportPath = new Setting(settingsContainer)
             .setName("Generate path")
-            .setHeading()
             .addText(text => {
                 text
                     .setPlaceholder("Path")
@@ -116,8 +115,7 @@ export default class MainModal extends Modal {
         exportPath.controlEl.appendChild(extension)
             
         let model = new Setting(settingsContainer)
-            .setName("LLM")
-            .setHeading()
+            .setName("LLM to use")
             .addDropdown(dropdown => dropdown
                 .addOption('gpt-3.5-turbo', 'GPT 3.5 Turbo')
                 .addOption('gpt-3.5-turbo-0125', 'GPT 3.5 Turbo 0125')

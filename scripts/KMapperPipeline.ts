@@ -6,7 +6,7 @@ import DrawGraph from './DrawGraph';
 import { MainSettings } from './MainSettings';
 import Utils from './Utils';
 import MainModal from './MainModal';
-import { sampleTriples } from './sample-data/sample-triples';
+import { sampleTriples } from './sample-data/sampleTriplets';
 
 export default class KMapperPipeline{
     app: App;

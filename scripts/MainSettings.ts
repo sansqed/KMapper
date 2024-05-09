@@ -2,6 +2,7 @@ import {App, Plugin, PluginSettingTab, Setting, SliderComponent, TextAreaCompone
 import ObsidianKG from "main";
 import Utils from "./Utils";
 import OpenAIExample from "types/OpenAIExample";
+import { defaultPrompt, defaultExamples } from "./sample-data/defaultLLMData";
 
 type LayoutOption = 'layered' | 'radial' | 'force' | 'stress'
 
@@ -49,11 +50,11 @@ export const DEFAULT_SETTINGS:MainSettingsData = {
 
     // Triple Extraction settings
     llm: 'gpt-3.5-turbo-0125',
-    llmPrompt: "You are a helpful assistant that extracts concept-relation-concept triples from a set of bullet points, possibly nested. If a bullet point is an incomplete sentence, complete it first by looking at its parent and child bullet points. Assume that the children bullet points provide more context to the parent bullet point. Be sure to exhaust and consider all bullet points in the prompt. The triples should also makes sense and be as simple as possible. You can rephrase or summarize the concepts. For triples with multiple concept2, separate each concept2 in mutliple triples. Return the triples directly in JSON format with attributes 'concept1', 'relation', 'concept2'.",
+    llmPrompt: defaultPrompt,
     editLlmPrompt: false,
     openAISettings: {
         key: '',
-        examples: [],
+        examples: defaultExamples,
         temperature: 0.01
     },
 
@@ -164,6 +165,7 @@ export class MainSettings extends PluginSettingTab{
         let ExampleSetting = new Setting(examplesContainer)
             .setName("OpenAI examples")
             .setHeading()
+            .setDesc("These examples will guide the GPT models in the creating the ideal triples")
             .addButton(button => {
                 button.setButtonText("Add new example").onClick(async() => {
                     this.insertEmptyExampleData()
@@ -247,6 +249,7 @@ export class MainSettings extends PluginSettingTab{
 
         const minTextBoxWidth = new Setting(settingContainer)
             .setName("Minimum text box width")
+            .setDesc("This sets the minimum text box width in Canvas")
             .addSlider(slider => {
                 minWidthSlider = slider
                 minWidthSlider
@@ -265,6 +268,7 @@ export class MainSettings extends PluginSettingTab{
 
         const maxTextBoxWidth = new Setting(settingContainer)
             .setName("Maximum text box width")
+            .setDesc("This sets the maximum text box width in Canvas")
             .addSlider(slider => {
                 maxWidthSlider = slider
                 maxWidthSlider
@@ -284,6 +288,7 @@ export class MainSettings extends PluginSettingTab{
 
         const spacing = new Setting(settingContainer)
             .setName("Graph spacing")
+            .setDesc("This sets the spacing of the text boxes with each other. It is recommended to set it at 100-150.")
             .addSlider(slider => {
                 slider
                     .setLimits(50, 500, 50)

@@ -118,7 +118,9 @@ export default class Utils{
     }
     
     static obfuscateOpenAIKey(s:string){
-        return s.substring(0, 3) + "●●●●●" + s.substring(s.length-3)
+        if(s.length > 0)
+            return s.substring(0, 3) + "●●●●●" + s.substring(s.length-3)
+        return ""
     }
     
     static sanitizeJSON(s:string){
