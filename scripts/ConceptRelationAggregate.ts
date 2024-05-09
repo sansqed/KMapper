@@ -21,7 +21,7 @@ export default class ConceptRelationAggregate{
     async aggregate(triples: Triple[]){
 
         const childPromises = triples.map(async (t) => {
-            const {subject, object, relation} = t
+            let {subject, object, relation} = t
         
             const from = await this.processConcept(subject)
             const to = await this.processConcept(object) 
@@ -35,6 +35,8 @@ export default class ConceptRelationAggregate{
     }
 
     async processConcept(conceptText:string){
+        conceptText = conceptText.trim()
+        
         let thisConcept = this.hasConcept(conceptText)
         if(thisConcept === undefined){
             thisConcept = {
