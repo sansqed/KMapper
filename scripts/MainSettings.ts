@@ -145,7 +145,6 @@ export class MainSettings extends PluginSettingTab{
                 text.inputEl.style.width = "120%"
                 text.inputEl.style.height = "10rem"
                 text.inputEl.style.resize = "none"
-                text.inputEl.style.textWrap = ""
                 text
                     .setValue(MainSettings.settingsData.llmPrompt)
                     .onChange(async(value) => {

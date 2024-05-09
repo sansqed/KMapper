@@ -3,6 +3,7 @@ import { JSONCanvas, TextNode, Edge, EdgeSide, GenericNode} from "@trbn/jsoncanv
 import ELK, { ElkExtendedEdge, ElkNode } from 'elkjs/lib/elk.bundled.js'
 import assert from "assert";
 import { MainSettings } from "./MainSettings";
+import Utils from "./Utils";
 
 interface Point{
     x: number
@@ -76,9 +77,11 @@ export default class OptimizeCanvas{
         let decision = true
     
         canvas.getNodes().forEach(n => {
-            if("type" in n){
+
+            if(Utils.isTextNode(n))
                 if(n.type != "text") decision = false
-            } else decision = false
+            else
+                decision = false
         })
     
         return decision 

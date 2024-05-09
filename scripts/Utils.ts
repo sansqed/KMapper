@@ -1,5 +1,6 @@
 import { App, TFile, WorkspaceLeaf, OpenViewState, TFolder } from "obsidian";
 import { MainSettings } from "./MainSettings";
+import { JSONCanvas, TextNode, Edge, EdgeSide, GenericNode} from "@trbn/jsoncanvas";
 
 interface Expected{
     triples: {
@@ -45,7 +46,7 @@ export default class Utils{
     static getNextCanvasSuffix(app:App, path:string, basename:string){
         return recur(1)
     
-        function recur(i:number){
+        function recur(i:number): number{
             const {vault} = app
             const copyBaseName = basename + ` (${i})`
             const fileName = Utils.constructAbsoluteFilePath(path, copyBaseName, "canvas")
@@ -191,6 +192,10 @@ export default class Utils{
         })
     
         return JSON.stringify(expected)
+    }
+
+    static isTextNode(n:GenericNode): n is TextNode{
+        return "type" in <GenericNode>n
     }
 }
 

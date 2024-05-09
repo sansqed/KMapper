@@ -25,6 +25,7 @@ The name KMapper (pronounced as /ˈmæpər/) is derived from *knapping*, a proce
 ## 🔧Getting started
 ### Installation
 1. Clone this repo in `<vault dir>/.obsidian/plugins`
+2. Build KMapper by running `npm i` then `npm run build`
 3. Open `Settings > Third-party plugins` and disable `Safe mode`
 4. Activate KMapper in `Settings > Community plugins`
 5. In `Settings > KMapper`, enter OpenAI API key
