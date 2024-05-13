@@ -19,8 +19,8 @@ export default class KMapperPlugin extends Plugin {
 		ribbonIconEl.addClass('kmapper-ribbon');
 
 		this.addCommand({
-			id: 'generate-knowledge-map',
-			name: 'Generate knowledge map',
+			id: 'generate-concept-map',
+			name: 'Generate concept map',
 			callback: () => {
 				new MainModal(this.app, MainSettings.settingsData).open();
 			}
